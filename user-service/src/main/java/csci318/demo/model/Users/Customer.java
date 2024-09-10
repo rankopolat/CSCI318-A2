@@ -1,6 +1,4 @@
-package csci318.demo.model.Users.Customer;
-
-import csci318.demo.model.Users.User;
+package csci318.demo.model.Users;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
