@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import csci318.demo.model.Cart.Cart;
 import csci318.demo.model.Users.Customer;
 import csci318.demo.service.UserService;
 
@@ -45,9 +46,14 @@ public class UserController {
         return userService.getCustomer(id);
     }
 
-    @GetMapping("/hi")
-    public String hi(){
-        return "hellow there testing";
+    @PostMapping("/users/{customerId}/carts")
+     public Cart createCart(@PathVariable Long customerId) {
+        return userService.createCartForCustomer(customerId);
+    }
+
+    @GetMapping("/users/{customerId}/carts")
+     public Cart getCart(@PathVariable Long customerId) {
+        return userService.getCartForCustomer(customerId);
     }
 
 

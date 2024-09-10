@@ -6,7 +6,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
 
+import csci318.demo.model.Cart.Cart;
 import csci318.demo.model.Users.Customer;
 import csci318.demo.repository.CustomerRepository;
 
@@ -15,11 +17,13 @@ import csci318.demo.repository.CustomerRepository;
 public class UserService {
 
     private final CustomerRepository customerRepository;
+    private final RestTemplate restTemplate;
 
     // Constructor injection for CustomerRepository.
     @Autowired
-    public UserService(CustomerRepository customerRepository){
+    public UserService(CustomerRepository customerRepository, RestTemplate restTemplate){
         this.customerRepository = customerRepository;
+        this.restTemplate = restTemplate;
     }
 
      /**
@@ -110,4 +114,26 @@ public class UserService {
         return ResponseEntity.ok(customers);
 
     }
+
+    
+
+    public Cart createCartForCustomer(Long customerId) {
+
+        final String CART_URL = "http://localhost:8083/api/users/";
+        String url = CART_URL + customerId + "/carts";
+        
+        return restTemplate.postForObject(url, null, Cart.class);
+    }
+
+
+    public Cart getCartForCustomer(Long customerId) {
+
+        final String CART_URL = "http://localhost:8083/api/users/";
+        String url = CART_URL + customerId + "/carts";
+        
+        return restTemplate.getForObject(url, Cart.class);
+    }
+
+
+
 }
