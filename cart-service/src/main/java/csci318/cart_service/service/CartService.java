@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import csci318.cart_service.controller.DTO.CartDTO;
 import csci318.cart_service.model.Cart;
+import csci318.cart_service.model.CartItems;
 import csci318.cart_service.repository.CartRepository;
 
 @Service
@@ -48,6 +49,28 @@ public class CartService {
         csDto.setDate(c.getDate());
 
         return csDto;
+
+    }
+
+
+
+    public Cart getCartByCartId(Long cartId){
+
+        Cart c = cartRepository.findById(cartId)
+        .orElseThrow(() -> new RuntimeException("Cart not found with id: " + cartId));
+
+        return c;
+    }
+
+
+
+    
+    public Cart AddProductToCart(Long cartId, CartItems cartItems){
+
+        Cart c = getCartByCartId(cartId);
+        c.addItem(cartItems);
+
+        return cartRepository.save(c);
 
     }
 

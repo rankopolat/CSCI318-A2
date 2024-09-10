@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 
+import csci318.demo.controller.DTO.CartDTO;
 import csci318.demo.controller.DTO.ProductDTO;
 import csci318.demo.controller.Requests.ProductRequest;
 import csci318.demo.model.Cart.Cart;
@@ -122,23 +123,41 @@ public class UserService {
     }
 
     
-    public Cart createCartForCustomer(Long customerId) {
+    
+    /**
+     * 
+     * 
+     * 
+     */
+    public CartDTO createCartForCustomer(Long customerId) {
 
         final String CART_URL = "http://localhost:8083/api/users/";
         String url = CART_URL + customerId + "/carts";
         
-        return restTemplate.postForObject(url, null, Cart.class);
+        return restTemplate.postForObject(url, null, CartDTO.class);
     }
 
 
-    public Cart getCartForCustomer(Long customerId) {
+
+    /**
+     * 
+     * 
+     * 
+     */
+    public CartDTO getCartForCustomer(Long customerId) {
 
         final String CART_URL = "http://localhost:8083/api/users/";
         String url = CART_URL + customerId + "/carts";
 
-        return restTemplate.getForObject(url, Cart.class);
+        return restTemplate.getForObject(url, CartDTO.class);
     }
 
+
+    /**
+     * 
+     * 
+     * 
+     */
     public ProductDTO checkProduct(Long productId) {
 
         final String PRODUCT_URL = "http://localhost:8081/api/products/";
@@ -149,7 +168,13 @@ public class UserService {
     }
 
 
-    public Cart addProductToCart(Long customerId,Long cartid,ProductRequest productRequest){
+
+    /**
+     * 
+     * 
+     * 
+     */
+    public void addProductToCart(Long customerId, Long cartid, ProductRequest productRequest){
 
         checkProduct(productRequest.getProductId());
 
@@ -158,13 +183,28 @@ public class UserService {
         String url = CART_URL + cartid + "/products";
 
         try {
-            HttpEntity<ProductRequest> requestEntity = new HttpEntity<>(productRequest);
-            ResponseEntity<Cart> response = restTemplate.exchange(url, HttpMethod.PUT, requestEntity, Cart.class);
-            
-            return response.getBody();
+            restTemplate.put(url, productRequest);
+            //return restTemplate.getForObject(CART_URL + cartid, Cart.class);
+
         } catch (HttpClientErrorException e) {
             throw new RuntimeException("Error adding product to cart: " + e.getMessage());
         }
+    }
+
+
+
+    /**
+     * 
+     * 
+     * 
+     */
+    public Cart getCartByIdForCustomer(Long customerId, Long cartId){
+
+        final String CART_URL = "http://localhost:8083/api/carts/";
+        String url = CART_URL + cartId;
+
+        return restTemplate.getForObject(url, Cart.class);
+
     }
 
 

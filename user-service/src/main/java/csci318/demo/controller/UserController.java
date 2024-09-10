@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 import csci318.demo.model.Cart.Cart;
 import csci318.demo.model.Users.Customer;
 import csci318.demo.service.UserService;
+import csci318.demo.controller.DTO.CartDTO;
 import csci318.demo.controller.Requests.ProductRequest;
 
 @RestController
@@ -48,22 +50,24 @@ public class UserController {
     }
 
     @PostMapping("/{customerId}/carts")
-     public Cart createCart(@PathVariable Long customerId) {
+     public CartDTO createCart(@PathVariable Long customerId) {
         return userService.createCartForCustomer(customerId);
     }
 
     @GetMapping("/{customerId}/carts")
-     public Cart getCart(@PathVariable Long customerId) {
+     public CartDTO getCarts(@PathVariable Long customerId) {
         return userService.getCartForCustomer(customerId);
     }
 
-    @PostMapping("/{customerId}/carts/{cartid}/products")
-     public Cart addProductToCart(@PathVariable Long customerId, @PathVariable Long cartid, @RequestBody ProductRequest productRequest) {
-        return userService.addProductToCart(customerId, cartid, productRequest);
+    @GetMapping("/{customerId}/carts/{cartId}")
+     public Cart getCart(@PathVariable Long customerId, @PathVariable Long cartId) {
+        return userService.getCartByIdForCustomer(customerId, cartId);
     }
 
-    
-
+    @PutMapping("/{customerId}/carts/{cartid}/products")
+     public void addProductToCart(@PathVariable Long customerId, @PathVariable Long cartid, @RequestBody ProductRequest productRequest) {
+        userService.addProductToCart(customerId, cartid, productRequest);
+    }
 
     
 }
