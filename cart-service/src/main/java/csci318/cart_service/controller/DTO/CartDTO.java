@@ -1,14 +1,13 @@
-package csci318.demo.model.Cart;
+package csci318.cart_service.controller.DTO;
 
 import java.util.Date;
-import java.util.List;
 
-public class Cart {
+public class CartDTO {
 
     private Long id;
     private Long customerId;
     private Date creationDate;
-    private List<CartItem> items;
+    
 
     public Date getDate(){
         return creationDate;
@@ -18,6 +17,7 @@ public class Cart {
         this.creationDate = d; 
     }
 
+    
     public Long getId() {
         return id;
     }
@@ -34,11 +34,4 @@ public class Cart {
         this.customerId = customerId;
     }
 
-    public List<CartItem> getItems() {
-        return items;
-    }
-
-    public void setItems(List<CartItem> items) {
-        this.items = items;
-    }
 }

@@ -1,6 +1,7 @@
 package csci318.cart_service.model;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import jakarta.persistence.CascadeType;
@@ -25,10 +26,21 @@ public class Cart {
     @Column(name = "customer_id")
     private Long customerId;
 
+    @Column(name = "creationDate")
+    private Date creationDate;
+
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn(name = "cart_id")
     private List<CartItems> items = new ArrayList<>();
     
+
+    public Date getDate(){
+        return creationDate;
+    }
+
+    public void setDate(Date d){
+        this.creationDate = d; 
+    }
 
     public Long getId() {
         return id;

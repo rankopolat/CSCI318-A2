@@ -7,6 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import csci318.product_service.repository.ProductRepository;
+import csci318.product_service.controller.DTO.ProductDTO;
 import csci318.product_service.model.Product;
 
 
@@ -59,15 +60,20 @@ public class ProductService {
      * @param id The UUID of the product.
      * @return A ResponseEntity containing the product or an error message.
      */
-    public ResponseEntity<?> searchProduct(Long id){
+    public ProductDTO searchProduct(Long id){
 
         Optional<Product> optionalProduct = productRepository.findById(id);
     
         if (optionalProduct.isPresent()) {
+
             Product product = optionalProduct.get();
-            return ResponseEntity.ok(product);
+            ProductDTO productDTO = new ProductDTO();
+            
+            productDTO.setProductId(product.getId());
+            return productDTO;
+
         } else {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Product not found");
+            throw new RuntimeException("Product not found with id: " + id);
         }
         
     }

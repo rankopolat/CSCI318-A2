@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 
 import csci318.product_service.service.ProductService;
+import csci318.product_service.controller.DTO.ProductDTO;
 import csci318.product_service.model.Product;
 
 @RestController
@@ -39,20 +40,8 @@ public class ProductController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<?> searchProduct(@PathVariable Long id){
+    public ProductDTO searchProduct(@PathVariable Long id){
         return productService.searchProduct(id);
-    }
-
-
-    @GetMapping("/test")
-    public ResponseEntity<?> tester(){
-
-        final String url = "http://localhost:8080/api/hi";
-
-        String response = restTemplate.getForObject(url, String.class);
-
-        return ResponseEntity.ok(response);
-
     }
 
 }

@@ -13,9 +13,10 @@ import org.springframework.web.bind.annotation.RestController;
 import csci318.demo.model.Cart.Cart;
 import csci318.demo.model.Users.Customer;
 import csci318.demo.service.UserService;
+import csci318.demo.controller.Requests.ProductRequest;
 
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/api/users")
 @CrossOrigin(origins = "*")
 public class UserController {
 
@@ -26,35 +27,42 @@ public class UserController {
         this.userService = userService;
     }
 
-    @PostMapping("/users")
+    @PostMapping("")
     public ResponseEntity<?> registerCustomer(@RequestBody Customer customer){
         return userService.registerCustomer(customer);
     }
 
-    @GetMapping("/users")
+    @GetMapping("")
     public ResponseEntity<?> getUsers(){
         return userService.getCustomers();
     }
 
-    @PostMapping("/users/login")
+    @PostMapping("/login")
     public ResponseEntity<?> loginCustomer(@RequestBody Customer user){
         return userService.loginCustomer(user);
     }
 
-    @GetMapping("/users/{id}")
+    @GetMapping("/{id}")
     public ResponseEntity<?> getCustomer(@PathVariable Long id){
         return userService.getCustomer(id);
     }
 
-    @PostMapping("/users/{customerId}/carts")
+    @PostMapping("/{customerId}/carts")
      public Cart createCart(@PathVariable Long customerId) {
         return userService.createCartForCustomer(customerId);
     }
 
-    @GetMapping("/users/{customerId}/carts")
+    @GetMapping("/{customerId}/carts")
      public Cart getCart(@PathVariable Long customerId) {
         return userService.getCartForCustomer(customerId);
     }
+
+    @PostMapping("/{customerId}/carts/{cartid}/products")
+     public Cart addProductToCart(@PathVariable Long customerId, @PathVariable Long cartid, @RequestBody ProductRequest productRequest) {
+        return userService.addProductToCart(customerId, cartid, productRequest);
+    }
+
+    
 
 
     

@@ -3,11 +3,17 @@ package csci318.demo.service;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 
+import csci318.demo.controller.DTO.ProductDTO;
+import csci318.demo.controller.Requests.ProductRequest;
 import csci318.demo.model.Cart.Cart;
 import csci318.demo.model.Users.Customer;
 import csci318.demo.repository.CustomerRepository;
@@ -116,7 +122,6 @@ public class UserService {
     }
 
     
-
     public Cart createCartForCustomer(Long customerId) {
 
         final String CART_URL = "http://localhost:8083/api/users/";
@@ -130,10 +135,37 @@ public class UserService {
 
         final String CART_URL = "http://localhost:8083/api/users/";
         String url = CART_URL + customerId + "/carts";
-        
+
         return restTemplate.getForObject(url, Cart.class);
     }
 
+    public ProductDTO checkProduct(Long productId) {
+
+        final String PRODUCT_URL = "http://localhost:8081/api/products/";
+        String url = PRODUCT_URL + productId;
+
+        return restTemplate.getForObject(url, ProductDTO.class);
+         
+    }
+
+
+    public Cart addProductToCart(Long customerId,Long cartid,ProductRequest productRequest){
+
+        checkProduct(productRequest.getProductId());
+
+
+        final String CART_URL = "http://localhost:8083/api/carts/";
+        String url = CART_URL + cartid + "/products";
+
+        try {
+            HttpEntity<ProductRequest> requestEntity = new HttpEntity<>(productRequest);
+            ResponseEntity<Cart> response = restTemplate.exchange(url, HttpMethod.PUT, requestEntity, Cart.class);
+            
+            return response.getBody();
+        } catch (HttpClientErrorException e) {
+            throw new RuntimeException("Error adding product to cart: " + e.getMessage());
+        }
+    }
 
 
 }
