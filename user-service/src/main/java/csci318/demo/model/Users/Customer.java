@@ -1,0 +1,48 @@
+package csci318.demo.model.Users.Customer;
+
+import csci318.demo.model.Users.User;
+
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Inheritance;
+import jakarta.persistence.InheritanceType;
+import jakarta.persistence.Table;
+
+@Entity
+@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
+@Table(name = "customers")
+public class Customer extends User {
+
+    @Column(name = "CustomerAddress")
+    private String address;
+
+    @Column(name = "CustomerAge")
+    private int age;
+
+    @Column(name = "CustomerGender")
+    private String gender;
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+    public int getAge() {
+        return age;
+    }
+
+    public void setAge(int age) {
+        this.age = age;
+    }
+
+    public String getGender() {
+        return gender;
+    }
+
+    public void setGender(String gender) {
+        this.gender = gender;
+    }
+}
