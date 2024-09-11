@@ -26,7 +26,7 @@ public class UserService {
     private final CustomerRepository customerRepository;
     private final RestTemplate restTemplate;
 
-    public final String CART_URL = "http://localhost:8083/api/users/";
+    public final String CART_URL = "http://localhost:8083/api/carts/";
     public final String PRODUCT_URL = "http://localhost:8081/api/products/";
 
     // Constructor injection for CustomerRepository.
@@ -135,7 +135,7 @@ public class UserService {
      */
     public CartDTO createCartForCustomer(Long customerId) {
 
-        String url = CART_URL + customerId + "/carts";
+        String url = CART_URL + customerId;
         
         return restTemplate.postForObject(url, null, CartDTO.class);
     }
@@ -150,7 +150,7 @@ public class UserService {
      */
     public List<CartDTO> getCartsForCustomer(Long customerId) {
 
-        String url = CART_URL + customerId + "/carts";
+        String url = CART_URL + customerId;
 
         CartDTO[] cartArray = restTemplate.getForObject(url, CartDTO[].class);
 
@@ -184,7 +184,7 @@ public class UserService {
 
         checkProduct(productRequest.getProductId());
 
-        String url = CART_URL + "/carts/" + cartid + "/products";
+        String url = CART_URL + cartid + "/products";
 
         try {
             restTemplate.put(url, productRequest);
@@ -205,7 +205,7 @@ public class UserService {
      */
     public Cart getCartByIdForCustomer(Long customerId, Long cartId){
 
-        String url = CART_URL + "/carts/" + cartId;
+        String url = CART_URL + cartId;
 
         return restTemplate.getForObject(url, Cart.class);
 
@@ -221,7 +221,7 @@ public class UserService {
      */
     public void removeProductFromCart(Long cartId, Long productId){
 
-        String url = CART_URL + "/carts/" + cartId + "/products/" + productId;
+        String url = CART_URL + cartId + "/products/" + productId;
 
         try {
             restTemplate.delete(url);

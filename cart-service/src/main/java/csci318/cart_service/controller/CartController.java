@@ -21,7 +21,7 @@ import csci318.cart_service.model.CartItems;
 import csci318.cart_service.service.CartService;
 
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/api/carts")
 @CrossOrigin(origins = "*")
 public class CartController {
 
@@ -33,27 +33,27 @@ public class CartController {
         this.cartService = cartService;
     }
 
-    @PostMapping("/users/{customerId}/carts")
+    @PostMapping("/{customerId}")
     public CartDTO createCartForCustomer(@PathVariable Long customerId) {
         return cartService.createCartForCustomer(customerId);
     }
 
-    @GetMapping("/users/{customerId}/carts")
+    @GetMapping("/{customerId}")
     public List<CartDTO> getCarts(@PathVariable Long customerId) {
         return cartService.getCartsByCustomerId(customerId);
     }
 
-    @GetMapping("/users/carts/{cartId}")
+    @GetMapping("/{cartId}")
     public Cart getCartByCartId(@PathVariable Long cartId) {
         return cartService.getCartByCartId(cartId);
     }
 
-    @PutMapping("/users/carts/{cartId}/products")
+    @PutMapping("/{cartId}/products")
     public Cart AddProductToCart(@PathVariable Long cartId, @RequestBody CartItems cartItems){
         return cartService.AddProductToCart(cartId, cartItems);
     }
 
-    @DeleteMapping("/users/carts/{cartId}/products/{productId}")
+    @DeleteMapping("/{cartId}/products/{productId}")
     public ResponseEntity<?> RemoveProductFromCart(@PathVariable Long cartId, @PathVariable Long productId){
 
         boolean removed = cartService.removeProduct(cartId, productId);
