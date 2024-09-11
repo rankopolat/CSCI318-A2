@@ -7,17 +7,26 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
 
 import csci318.cart_service.controller.DTO.CartDTO;
 import csci318.cart_service.model.Cart;
 import csci318.cart_service.model.CartItems;
 import csci318.cart_service.repository.CartRepository;
+import csci318.cart_service.controller.DTO.ProductDTO;
 
 @Service
 public class CartService {
     
+    private final CartRepository cartRepository;
+    private final RestTemplate restTemplate;
+
     @Autowired
-    private CartRepository cartRepository;
+    public CartService(CartRepository cartRepository, RestTemplate restTemplate){
+        this.cartRepository = cartRepository;
+        this.restTemplate = restTemplate;
+    }
+    
 
     public CartDTO createCartForCustomer(Long customerId) {
 
@@ -73,10 +82,29 @@ public class CartService {
     }
 
 
+     
+    /**
+     * Checks if a product exists by querying the product service.
+     * 
+     * @param productId The ID of the product to check.
+     * @return The ProductDTO object if the product exists.
+     */
+    public final String PRODUCT_URL = "http://localhost:8081/api/products/";
+
+    public ProductDTO checkProduct(Long productId) {
+
+        String url = PRODUCT_URL + productId;
+
+        return restTemplate.getForObject(url, ProductDTO.class);
+         
+    }
+
 
     
     public Cart AddProductToCart(Long cartId, CartItems cartItems){
 
+        checkProduct(cartItems.getProductId());
+        
         Cart c = getCartByCartId(cartId);
         c.addItem(cartItems);
 

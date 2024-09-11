@@ -13,7 +13,6 @@ import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 
 import csci318.demo.controller.DTO.CartDTO;
-import csci318.demo.controller.DTO.ProductDTO;
 import csci318.demo.controller.Requests.ProductRequest;
 import csci318.demo.model.Cart.Cart;
 import csci318.demo.model.Users.Customer;
@@ -27,7 +26,6 @@ public class UserService {
     private final RestTemplate restTemplate;
 
     public final String CART_URL = "http://localhost:8083/api/carts/";
-    public final String PRODUCT_URL = "http://localhost:8081/api/products/";
 
     // Constructor injection for CustomerRepository.
     @Autowired
@@ -151,25 +149,9 @@ public class UserService {
     public List<CartDTO> getCartsForCustomer(Long customerId) {
 
         String url = CART_URL + "/user" + customerId;
-
         CartDTO[] cartArray = restTemplate.getForObject(url, CartDTO[].class);
 
         return Arrays.asList(cartArray);
-    }
-
-
-    /**
-     * Checks if a product exists by querying the product service.
-     * 
-     * @param productId The ID of the product to check.
-     * @return The ProductDTO object if the product exists.
-     */
-    public ProductDTO checkProduct(Long productId) {
-
-        String url = PRODUCT_URL + productId;
-
-        return restTemplate.getForObject(url, ProductDTO.class);
-         
     }
 
 
@@ -182,16 +164,9 @@ public class UserService {
      */
     public void addProductToCart(Long cartid, ProductRequest productRequest){
 
-        checkProduct(productRequest.getProductId());
-
         String url = CART_URL + cartid + "/products";
+        restTemplate.put(url, productRequest);
 
-        try {
-            restTemplate.put(url, productRequest);
-
-        } catch (HttpClientErrorException e) {
-            throw new RuntimeException("Error adding product to cart: " + e.getMessage());
-        }
     }
 
 
@@ -206,7 +181,6 @@ public class UserService {
     public Cart getCartByIdForCustomer(Long customerId, Long cartId){
 
         String url = CART_URL + cartId;
-
         return restTemplate.getForObject(url, Cart.class);
 
     }
@@ -222,12 +196,7 @@ public class UserService {
     public void removeProductFromCart(Long cartId, Long productId){
 
         String url = CART_URL + cartId + "/products/" + productId;
-
-        try {
-            restTemplate.delete(url);
-        } catch (HttpClientErrorException e) {
-            throw new RuntimeException("Error removing product from cart: " + e.getMessage());
-        }
+        restTemplate.delete(url);
 
     }
 
