@@ -33,12 +33,12 @@ public class CartController {
         this.cartService = cartService;
     }
 
-    @PostMapping("/{customerId}")
+    @PostMapping("/user/{customerId}")
     public CartDTO createCartForCustomer(@PathVariable Long customerId) {
         return cartService.createCartForCustomer(customerId);
     }
 
-    @GetMapping("/{customerId}")
+    @GetMapping("/user/{customerId}")
     public List<CartDTO> getCarts(@PathVariable Long customerId) {
         return cartService.getCartsByCustomerId(customerId);
     }

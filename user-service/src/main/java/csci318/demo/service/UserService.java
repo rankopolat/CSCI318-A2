@@ -135,7 +135,7 @@ public class UserService {
      */
     public CartDTO createCartForCustomer(Long customerId) {
 
-        String url = CART_URL + customerId;
+        String url = CART_URL + "/user" + customerId;
         
         return restTemplate.postForObject(url, null, CartDTO.class);
     }
@@ -150,7 +150,7 @@ public class UserService {
      */
     public List<CartDTO> getCartsForCustomer(Long customerId) {
 
-        String url = CART_URL + customerId;
+        String url = CART_URL + "/user" + customerId;
 
         CartDTO[] cartArray = restTemplate.getForObject(url, CartDTO[].class);
 
