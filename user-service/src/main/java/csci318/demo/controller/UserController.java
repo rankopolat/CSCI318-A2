@@ -69,7 +69,8 @@ public class UserController {
 
     @GetMapping("/users/carts/{cartid}/products")
      public void getProductsFromCart(@PathVariable Long cartid, @RequestBody ProductRequest productRequest) {
-       // userService.getProductsFromCart(cartid, productRequest);
+        //this will need to return a list of products in the cart
+        // userService.getProductsFromCart(cartid, productRequest);
     }
 
     @PutMapping("/users/carts/{cartid}/products")
