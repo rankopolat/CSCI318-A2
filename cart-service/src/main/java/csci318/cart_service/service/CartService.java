@@ -1,8 +1,9 @@
 package csci318.cart_service.service;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -38,17 +39,26 @@ public class CartService {
 
     }
 
-    public CartDTO getCartByCustomerId(Long customerId) {
+    public List<CartDTO> getCartsByCustomerId(Long customerId) {
 
-        Cart c = cartRepository.findByCustomerId(customerId)
-            .orElseThrow(() -> new RuntimeException("Cart not found for customer with customer id: " + customerId));
+        List<Cart> carts = cartRepository.findByCustomerId(customerId);
 
-        CartDTO csDto =  new CartDTO();
-        csDto.setCustomerId(c.getCustomerId());
-        csDto.setId(c.getId());
-        csDto.setDate(c.getDate());
+        if (carts.isEmpty()) {
+            throw new RuntimeException("No carts found for customer with customer id: " + customerId);
+        }
 
-        return csDto;
+        List<CartDTO> cartDTOs = new ArrayList<>();
+
+        for (Cart cart : carts) {
+            CartDTO csDto = new CartDTO();
+            csDto.setCustomerId(cart.getCustomerId());
+            csDto.setId(cart.getId());
+            csDto.setDate(cart.getDate());
+    
+            cartDTOs.add(csDto);
+        }
+
+        return cartDTOs;
 
     }
 
@@ -72,6 +82,35 @@ public class CartService {
 
         return cartRepository.save(c);
 
+    }
+
+
+    public boolean removeProduct(Long cartId, Long productId) {
+
+        Cart cart = cartRepository.findById(cartId).orElse(null);
+
+        if (cart == null) {
+            return false;
+        }
+
+        List<CartItems> items = cart.getItems();
+        if (items == null || items.isEmpty()) {
+            return false;
+        }
+        
+        CartItems productToRemove = items.stream()
+        .filter(item -> item.getId().equals(productId))
+        .findFirst()
+        .orElse(null);
+
+        if (productToRemove != null) {
+
+            cart.removeItem(productToRemove);
+            cartRepository.save(cart);
+            return true;
+        }
+
+        return false; 
     }
 
 

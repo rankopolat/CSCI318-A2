@@ -1,7 +1,12 @@
 package csci318.cart_service.controller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -34,18 +39,30 @@ public class CartController {
     }
 
     @GetMapping("/users/{customerId}/carts")
-    public CartDTO getCart(@PathVariable Long customerId) {
-        return cartService.getCartByCustomerId(customerId);
+    public List<CartDTO> getCarts(@PathVariable Long customerId) {
+        return cartService.getCartsByCustomerId(customerId);
     }
 
-    @GetMapping("/carts/{cartId}")
+    @GetMapping("/users/carts/{cartId}")
     public Cart getCartByCartId(@PathVariable Long cartId) {
         return cartService.getCartByCartId(cartId);
     }
 
-    @PutMapping("/carts/{cartId}/products")
+    @PutMapping("/users/carts/{cartId}/products")
     public Cart AddProductToCart(@PathVariable Long cartId, @RequestBody CartItems cartItems){
         return cartService.AddProductToCart(cartId, cartItems);
+    }
+
+    @DeleteMapping("/users/carts/{cartId}/products/{productId}")
+    public ResponseEntity<?> RemoveProductFromCart(@PathVariable Long cartId, @PathVariable Long productId){
+
+        boolean removed = cartService.removeProduct(cartId, productId);
+
+        if (removed) {
+            return ResponseEntity.ok("Product removed from cart");
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Product not found in cart");
+        }
     }
 
 

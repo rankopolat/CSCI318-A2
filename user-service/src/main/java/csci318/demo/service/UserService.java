@@ -2,13 +2,13 @@ package csci318.demo.service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Arrays;
+
+
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 
@@ -25,6 +25,9 @@ public class UserService {
 
     private final CustomerRepository customerRepository;
     private final RestTemplate restTemplate;
+
+    public final String CART_URL = "http://localhost:8083/api/users/";
+    public final String PRODUCT_URL = "http://localhost:8081/api/products/";
 
     // Constructor injection for CustomerRepository.
     @Autowired
@@ -125,13 +128,13 @@ public class UserService {
     
     
     /**
+     * Creates a new cart for a specific customer.
      * 
-     * 
-     * 
+     * @param customerId The ID of the customer for whom the cart will be created.
+     * @return The newly created CartDTO object.
      */
     public CartDTO createCartForCustomer(Long customerId) {
 
-        final String CART_URL = "http://localhost:8083/api/users/";
         String url = CART_URL + customerId + "/carts";
         
         return restTemplate.postForObject(url, null, CartDTO.class);
@@ -140,27 +143,29 @@ public class UserService {
 
 
     /**
+     * Retrieves a cart for a specific customer.
      * 
-     * 
-     * 
+     * @param customerId The ID of the customer whose cart is being retrieved.
+     * @return The CartDTO object containing cart details.
      */
-    public CartDTO getCartForCustomer(Long customerId) {
+    public List<CartDTO> getCartsForCustomer(Long customerId) {
 
-        final String CART_URL = "http://localhost:8083/api/users/";
         String url = CART_URL + customerId + "/carts";
 
-        return restTemplate.getForObject(url, CartDTO.class);
+        CartDTO[] cartArray = restTemplate.getForObject(url, CartDTO[].class);
+
+        return Arrays.asList(cartArray);
     }
 
 
     /**
+     * Checks if a product exists by querying the product service.
      * 
-     * 
-     * 
+     * @param productId The ID of the product to check.
+     * @return The ProductDTO object if the product exists.
      */
     public ProductDTO checkProduct(Long productId) {
 
-        final String PRODUCT_URL = "http://localhost:8081/api/products/";
         String url = PRODUCT_URL + productId;
 
         return restTemplate.getForObject(url, ProductDTO.class);
@@ -170,21 +175,19 @@ public class UserService {
 
 
     /**
+     * Adds a product to a specific cart.
      * 
-     * 
-     * 
+     * @param cartId The ID of the cart to which the product will be added.
+     * @param productRequest The ProductRequest object containing product details.
      */
-    public void addProductToCart(Long customerId, Long cartid, ProductRequest productRequest){
+    public void addProductToCart(Long cartid, ProductRequest productRequest){
 
         checkProduct(productRequest.getProductId());
 
-
-        final String CART_URL = "http://localhost:8083/api/carts/";
-        String url = CART_URL + cartid + "/products";
+        String url = CART_URL + "/carts/" + cartid + "/products";
 
         try {
             restTemplate.put(url, productRequest);
-            //return restTemplate.getForObject(CART_URL + cartid, Cart.class);
 
         } catch (HttpClientErrorException e) {
             throw new RuntimeException("Error adding product to cart: " + e.getMessage());
@@ -194,16 +197,37 @@ public class UserService {
 
 
     /**
+     * Retrieves a specific cart for a customer by cart ID.
+     * 
+     * @param customerId The ID of the customer.
+     * @param cartId The ID of the cart to be retrieved.
+     * @return The Cart object containing cart details.
+     */
+    public Cart getCartByIdForCustomer(Long customerId, Long cartId){
+
+        String url = CART_URL + "/carts/" + cartId;
+
+        return restTemplate.getForObject(url, Cart.class);
+
+    }
+
+
+
+
+    /**
      * 
      * 
      * 
      */
-    public Cart getCartByIdForCustomer(Long customerId, Long cartId){
+    public void removeProductFromCart(Long cartId, Long productId){
 
-        final String CART_URL = "http://localhost:8083/api/carts/";
-        String url = CART_URL + cartId;
+        String url = CART_URL + "/carts/" + cartId + "/products/" + productId;
 
-        return restTemplate.getForObject(url, Cart.class);
+        try {
+            restTemplate.delete(url);
+        } catch (HttpClientErrorException e) {
+            throw new RuntimeException("Error removing product from cart: " + e.getMessage());
+        }
 
     }
 

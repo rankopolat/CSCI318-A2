@@ -1,8 +1,11 @@
 package csci318.demo.controller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -18,7 +21,7 @@ import csci318.demo.controller.DTO.CartDTO;
 import csci318.demo.controller.Requests.ProductRequest;
 
 @RestController
-@RequestMapping("/api/users")
+@RequestMapping("/api")
 @CrossOrigin(origins = "*")
 public class UserController {
 
@@ -29,44 +32,54 @@ public class UserController {
         this.userService = userService;
     }
 
-    @PostMapping("")
+    @PostMapping("/users")
     public ResponseEntity<?> registerCustomer(@RequestBody Customer customer){
         return userService.registerCustomer(customer);
     }
 
-    @GetMapping("")
+    @GetMapping("/users")
     public ResponseEntity<?> getUsers(){
         return userService.getCustomers();
     }
 
-    @PostMapping("/login")
+    @PostMapping("/users/login")
     public ResponseEntity<?> loginCustomer(@RequestBody Customer user){
         return userService.loginCustomer(user);
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/users/{id}")
     public ResponseEntity<?> getCustomer(@PathVariable Long id){
         return userService.getCustomer(id);
     }
 
-    @PostMapping("/{customerId}/carts")
+    @PostMapping("/users/{customerId}/carts")
      public CartDTO createCart(@PathVariable Long customerId) {
         return userService.createCartForCustomer(customerId);
     }
 
-    @GetMapping("/{customerId}/carts")
-     public CartDTO getCarts(@PathVariable Long customerId) {
-        return userService.getCartForCustomer(customerId);
+    @GetMapping("/users/{customerId}/carts")
+     public List<CartDTO> getCarts(@PathVariable Long customerId) {
+        return userService.getCartsForCustomer(customerId);
     }
 
-    @GetMapping("/{customerId}/carts/{cartId}")
+    @GetMapping("/users/{customerId}/carts/{cartId}")
      public Cart getCart(@PathVariable Long customerId, @PathVariable Long cartId) {
         return userService.getCartByIdForCustomer(customerId, cartId);
     }
 
-    @PutMapping("/{customerId}/carts/{cartid}/products")
-     public void addProductToCart(@PathVariable Long customerId, @PathVariable Long cartid, @RequestBody ProductRequest productRequest) {
-        userService.addProductToCart(customerId, cartid, productRequest);
+    @GetMapping("/users/carts/{cartid}/products")
+     public void getProductsFromCart(@PathVariable Long cartid, @RequestBody ProductRequest productRequest) {
+       // userService.getProductsFromCart(cartid, productRequest);
+    }
+
+    @PutMapping("/users/carts/{cartid}/products")
+     public void addProductToCart(@PathVariable Long cartid, @RequestBody ProductRequest productRequest) {
+        userService.addProductToCart(cartid, productRequest);
+    }
+
+    @DeleteMapping("/users/carts/{cartid}/products/{productId}")
+     public void removeProductFromCart(@PathVariable Long cartid, @PathVariable Long productId) {
+        userService.removeProductFromCart(cartid, productId);
     }
 
     
