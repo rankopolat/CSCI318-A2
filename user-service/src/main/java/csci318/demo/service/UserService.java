@@ -7,6 +7,7 @@ import java.util.Arrays;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -17,6 +18,7 @@ import csci318.demo.controller.DTO.CartItemDTO;
 import csci318.demo.controller.Requests.ProductRequest;
 import csci318.demo.model.Cart.Cart;
 import csci318.demo.model.Users.Customer;
+import csci318.demo.model.event.UserEvent;
 import csci318.demo.repository.CustomerRepository;
 
 
@@ -25,15 +27,17 @@ public class UserService {
 
     private final CustomerRepository customerRepository;
     private final RestTemplate restTemplate;
+    private final ApplicationEventPublisher applicationEventPublisher;
 
     @Value("${cart.service.url}")
     private String CART_URL;
 
     // Constructor injection for CustomerRepository.
     @Autowired
-    public UserService(CustomerRepository customerRepository, RestTemplate restTemplate){
+    public UserService(CustomerRepository customerRepository, RestTemplate restTemplate, ApplicationEventPublisher applicationEventPublisher){
         this.customerRepository = customerRepository;
         this.restTemplate = restTemplate;
+        this.applicationEventPublisher = applicationEventPublisher;
     }
 
      /**
@@ -59,6 +63,9 @@ public class UserService {
             
             customerRepository.save(c);
 
+            UserEvent registerEvent = new UserEvent(UserEvent.EventType.USER_REGISTERED, null, null, c.getId());
+            applicationEventPublisher.publishEvent(registerEvent);
+
             return ResponseEntity.ok(c);
         } 
         catch (Exception e) {
@@ -81,6 +88,10 @@ public class UserService {
         // Check if the customer exists.
         if (customer != null){
             if(u.getPassword().equals(customer.getPassword())){
+
+                UserEvent loginEvent = new UserEvent(UserEvent.EventType.USER_LOGGED_IN, null, null, customer.getId());
+                applicationEventPublisher.publishEvent(loginEvent);
+
                 return ResponseEntity.ok(customer);
             }
 
@@ -137,7 +148,12 @@ public class UserService {
 
         String url = CART_URL + "/user/" + customerId;
         
-        return restTemplate.postForObject(url, null, CartDTO.class);
+        CartDTO createdCart = restTemplate.postForObject(url, null, CartDTO.class);
+
+        UserEvent cartCreatedEvent = new UserEvent(UserEvent.EventType.CART_CREATED,createdCart.getId() ,null , customerId);
+        applicationEventPublisher.publishEvent(cartCreatedEvent);
+
+        return createdCart;
     }
 
 
@@ -168,6 +184,9 @@ public class UserService {
 
         String url = CART_URL + cartid + "/products";
         restTemplate.put(url, productRequest);
+
+        UserEvent productAddedEvent = new UserEvent(UserEvent.EventType.PRODUCT_ADDED_TO_CART, cartid, productRequest.getProductId(), null);
+        applicationEventPublisher.publishEvent(productAddedEvent);
 
     }
 
@@ -200,6 +219,9 @@ public class UserService {
 
         String url = CART_URL + cartId + "/products/" + productId;
         restTemplate.delete(url);
+
+        UserEvent productAddedEvent = new UserEvent(UserEvent.EventType.PRODUCT_REMOVED_FROM_CART, cartId, productId, null);
+        applicationEventPublisher.publishEvent(productAddedEvent);
 
     }
 
