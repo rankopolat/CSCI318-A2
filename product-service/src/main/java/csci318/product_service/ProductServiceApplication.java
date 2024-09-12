@@ -28,11 +28,9 @@ public class ProductServiceApplication {
 			Product entry = new Product();
 			entry.setName("Apple");
 			productRepository.save(entry);
-			System.out.println(productRepository.findById(1L).orElseThrow().getName());
 			Product entry1 = new Product();
 			entry1.setName("Bannana");
 			productRepository.save(entry1);
-			System.out.println(productRepository.findById(2L).orElseThrow().getName());
 		};
 	}
 

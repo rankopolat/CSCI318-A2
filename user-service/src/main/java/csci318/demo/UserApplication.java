@@ -28,12 +28,14 @@ public class UserApplication {
 			entry.setId(1L);
 			entry.setName("Ranko");
 			customerRepository.save(entry);
-			System.out.println(customerRepository.findById(1L).orElseThrow().getName());
 			Customer entry1 = new Customer();
 			entry1.setId(2L);
-			entry1.setName("Jesus");
+			entry1.setName("Poh");
 			customerRepository.save(entry1);
-			System.out.println(customerRepository.findById(2L).orElseThrow().getName());
+			Customer entry2 = new Customer();
+			entry2.setId(3L);
+			entry2.setName("Tommy");
+			customerRepository.save(entry2);
 		};
 	}
 

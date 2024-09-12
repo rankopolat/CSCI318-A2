@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
 import csci318.demo.controller.DTO.CartDTO;
+import csci318.demo.controller.DTO.CartItemDTO;
 import csci318.demo.controller.Requests.ProductRequest;
 import csci318.demo.model.Cart.Cart;
 import csci318.demo.model.Users.Customer;
@@ -200,6 +201,23 @@ public class UserService {
         String url = CART_URL + cartId + "/products/" + productId;
         restTemplate.delete(url);
 
+    }
+
+
+
+
+    /**
+     * 
+     * 
+     * 
+     * 
+     */
+    public List<CartItemDTO> getProductsFromCart(Long cartid){
+
+        String url = CART_URL + cartid + "/products";
+        CartItemDTO[] cartItemsArray = restTemplate.getForObject(url, CartItemDTO[].class);
+
+        return Arrays.asList(cartItemsArray);
     }
 
 

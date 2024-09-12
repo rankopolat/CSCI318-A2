@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import csci318.cart_service.controller.DTO.CartDTO;
+import csci318.cart_service.controller.DTO.CartItemDTO;
 import csci318.cart_service.model.Cart;
 import csci318.cart_service.model.CartItems;
 import csci318.cart_service.service.CartService;
@@ -46,6 +47,11 @@ public class CartController {
     @GetMapping("/{cartId}")
     public Cart getCartByCartId(@PathVariable Long cartId) {
         return cartService.getCartByCartId(cartId);
+    }
+
+    @GetMapping("/{cartId}/products")
+    public List<CartItemDTO> getProductsFromCart(@PathVariable Long cartId){
+        return cartService.getProductsFromCart(cartId);
     }
 
     @PutMapping("/{cartId}/products")

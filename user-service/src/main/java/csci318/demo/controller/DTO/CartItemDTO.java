@@ -1,32 +1,13 @@
-package csci318.cart_service.model;
+package csci318.demo.controller.DTO;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
 
-@Entity
-@Table(name = "cart_items")
-public class CartItems {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+public class CartItemDTO {
+   
     private Long id;
-
-
-    @Column(name = "product_id")
     private Long productId;
-
-  
-    @Column(name = "quantity")
     private int quantity;
-
-    @Column(name = "product_name")
     private String name;
 
-  
     public String getName(){
         return name;
     }

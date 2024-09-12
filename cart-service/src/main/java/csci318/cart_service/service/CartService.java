@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
 import csci318.cart_service.controller.DTO.CartDTO;
+import csci318.cart_service.controller.DTO.CartItemDTO;
 import csci318.cart_service.model.Cart;
 import csci318.cart_service.model.CartItems;
 import csci318.cart_service.repository.CartRepository;
@@ -94,8 +95,10 @@ public class CartService {
     public ProductDTO checkProduct(Long productId) {
 
         String url = PRODUCT_URL + productId;
+        ProductDTO pdt =restTemplate.getForObject(url, ProductDTO.class);
+        System.out.println("ProductDTO: " + pdt.getName());
 
-        return restTemplate.getForObject(url, ProductDTO.class);
+        return pdt;
          
     }
 
@@ -103,11 +106,13 @@ public class CartService {
     
     public Cart AddProductToCart(Long cartId, CartItems cartItems){
 
-        checkProduct(cartItems.getProductId());
+        ProductDTO pdt = checkProduct(cartItems.getProductId());
         
         Cart c = getCartByCartId(cartId);
-        c.addItem(cartItems);
+        cartItems.setName(pdt.getName());
 
+        System.out.println("cccc: " + cartItems.getName());
+        c.addItem(cartItems);
         return cartRepository.save(c);
 
     }
@@ -141,5 +146,28 @@ public class CartService {
         return false; 
     }
 
+
+    public List<CartItemDTO> getProductsFromCart(Long cartId){
+
+        Cart cart = cartRepository.findById(cartId)
+            .orElseThrow(() -> new RuntimeException("Cart not found with id: " + cartId));
+
+        List<CartItemDTO> cartItemDTOs = new ArrayList<>();
+
+        for (CartItems c : cart.getItems()) {
+
+            CartItemDTO cI = new CartItemDTO();
+
+            cI.setId(c.getId());
+            cI.setProductId(c.getProductId());
+            cI.setQuantity(c.getQuantity());
+            cI.setName(c.getName());
+    
+            cartItemDTOs.add(cI);
+
+        }
+
+        return cartItemDTOs;
+    }
 
 }

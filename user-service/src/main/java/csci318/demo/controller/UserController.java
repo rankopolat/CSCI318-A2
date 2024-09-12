@@ -18,6 +18,7 @@ import csci318.demo.model.Cart.Cart;
 import csci318.demo.model.Users.Customer;
 import csci318.demo.service.UserService;
 import csci318.demo.controller.DTO.CartDTO;
+import csci318.demo.controller.DTO.CartItemDTO;
 import csci318.demo.controller.Requests.ProductRequest;
 
 @RestController
@@ -68,9 +69,8 @@ public class UserController {
     }
 
     @GetMapping("/users/carts/{cartid}/products")
-     public void getProductsFromCart(@PathVariable Long cartid, @RequestBody ProductRequest productRequest) {
-        //this will need to return a list of products in the cart
-        // userService.getProductsFromCart(cartid, productRequest);
+     public List<CartItemDTO> getProductsFromCart(@PathVariable Long cartid) {
+        return userService.getProductsFromCart(cartid);
     }
 
     @PutMapping("/users/carts/{cartid}/products")

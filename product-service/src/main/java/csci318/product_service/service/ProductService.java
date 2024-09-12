@@ -70,6 +70,8 @@ public class ProductService {
             ProductDTO productDTO = new ProductDTO();
             
             productDTO.setProductId(product.getId());
+            productDTO.setName(product.getName());
+            
             return productDTO;
 
         } else {
