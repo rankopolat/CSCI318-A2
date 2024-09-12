@@ -6,10 +6,10 @@ import java.util.Arrays;
 
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 
 import csci318.demo.controller.DTO.CartDTO;
@@ -25,7 +25,8 @@ public class UserService {
     private final CustomerRepository customerRepository;
     private final RestTemplate restTemplate;
 
-    public final String CART_URL = "http://localhost:8083/api/carts/";
+    @Value("${cart.service.url}")
+    private String CART_URL;
 
     // Constructor injection for CustomerRepository.
     @Autowired
@@ -189,9 +190,10 @@ public class UserService {
 
 
     /**
+     * Removes a specific product from a cart.
      * 
-     * 
-     * 
+     * @param cartId The ID of the cart from which the product will be removed.
+     * @param productId The ID of the product to be removed.
      */
     public void removeProductFromCart(Long cartId, Long productId){
 
