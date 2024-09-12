@@ -1,8 +1,5 @@
 package csci318.demo.model.Users;
 
-import org.springframework.data.domain.AbstractAggregateRoot;
-
-import csci318.demo.model.event.UserEvent;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
