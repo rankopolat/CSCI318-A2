@@ -4,6 +4,9 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import org.springframework.data.domain.AbstractAggregateRoot;
+
+import csci318.cart_service.model.event.CartEvent;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -16,7 +19,7 @@ import jakarta.persistence.Table;
 
 @Entity
 @Table(name = "carts")
-public class Cart {
+public class Cart extends AbstractAggregateRoot<Cart> {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -66,10 +69,18 @@ public class Cart {
 
     public void addItem(CartItems item) {
         this.items.add(item);
+
+        CartEvent event = new CartEvent(CartEvent.EventType.PRODUCT_ADDED_TO_CART,this.id, item.getProductId(), null);
+        registerEvent(event);
+
     }
 
     public void removeItem(CartItems item) {
         this.items.remove(item);
+
+        CartEvent event = new CartEvent(CartEvent.EventType.PRODUCT_REMOVED_FROM_CART,this.id, item.getProductId(), null);
+        registerEvent(event);
+        
     }
 }
 

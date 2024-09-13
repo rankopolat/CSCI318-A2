@@ -6,6 +6,7 @@ import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
@@ -13,6 +14,7 @@ import csci318.cart_service.controller.DTO.CartDTO;
 import csci318.cart_service.controller.DTO.CartItemDTO;
 import csci318.cart_service.model.Cart;
 import csci318.cart_service.model.CartItems;
+import csci318.cart_service.model.event.CartEvent;
 import csci318.cart_service.repository.CartRepository;
 import csci318.cart_service.controller.DTO.ProductDTO;
 
@@ -21,11 +23,13 @@ public class CartService {
     
     private final CartRepository cartRepository;
     private final RestTemplate restTemplate;
+    private final ApplicationEventPublisher applicationEventPublisher;
 
     @Autowired
-    public CartService(CartRepository cartRepository, RestTemplate restTemplate){
+    public CartService(CartRepository cartRepository, RestTemplate restTemplate, ApplicationEventPublisher applicationEventPublisher){
         this.cartRepository = cartRepository;
         this.restTemplate = restTemplate;
+        this.applicationEventPublisher = applicationEventPublisher;
     }
     
 
@@ -39,6 +43,9 @@ public class CartService {
         cart.setDate(date);
 
         cartRepository.save(cart);
+
+        CartEvent createCartEvent = new CartEvent(CartEvent.EventType.CART_CREATED, cart.getId(), null, customerId);
+        applicationEventPublisher.publishEvent(createCartEvent);
 
         CartDTO cd = new CartDTO();
         cd.setCustomerId(cart.getCustomerId());
@@ -111,9 +118,10 @@ public class CartService {
         Cart c = getCartByCartId(cartId);
         cartItems.setName(pdt.getName());
 
-        System.out.println("cccc: " + cartItems.getName());
         c.addItem(cartItems);
-        return cartRepository.save(c);
+        cartRepository.save(c);
+
+        return c;
 
     }
 
