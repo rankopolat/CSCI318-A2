@@ -127,7 +127,7 @@ public class CartService {
         String PRODUCT_URL = "http://localhost:8081/api/products/";
         String url = PRODUCT_URL + productId;
 
-        ProductDTO pdt =restTemplate.getForObject(url, ProductDTO.class);
+        ProductDTO pdt = restTemplate.getForObject(url, ProductDTO.class);
 
         return pdt;
          
