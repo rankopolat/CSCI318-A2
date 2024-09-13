@@ -38,7 +38,6 @@ public class UserApplication {
 			customerRepository.save(entry);
 
 
-
 			Customer entry1 = new Customer();
 			entry1.setId(2L);
 			entry1.setName("Poh");
