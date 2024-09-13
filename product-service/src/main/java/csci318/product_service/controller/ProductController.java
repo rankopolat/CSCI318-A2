@@ -9,7 +9,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.client.RestTemplate;
 
 import csci318.product_service.service.ProductService;
 import csci318.product_service.controller.DTO.ProductDTO;
@@ -21,12 +20,10 @@ import csci318.product_service.model.Product;
 public class ProductController {
 
     private final ProductService productService;
-    private final RestTemplate restTemplate;
 
     @Autowired
-    public ProductController(ProductService productService, RestTemplate restTemplate){
+    public ProductController(ProductService productService){
         this.productService = productService;
-        this.restTemplate = restTemplate;
     }
 
     @PostMapping("")

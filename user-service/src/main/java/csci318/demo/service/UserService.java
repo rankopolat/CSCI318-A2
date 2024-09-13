@@ -229,10 +229,10 @@ public class UserService {
 
 
     /**
+     * Retrieves all products from a specific cart.
      * 
-     * 
-     * 
-     * 
+     * @param cartId The ID of the cart from which products will be retrieved.
+     * @return A list of CartItemDTO objects representing the products in the cart.
      */
     public List<CartItemDTO> getProductsFromCart(Long cartid){
 

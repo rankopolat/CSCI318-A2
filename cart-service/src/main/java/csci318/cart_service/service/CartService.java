@@ -33,6 +33,13 @@ public class CartService {
     }
     
 
+
+    /**
+     * Creates a new cart for a specific customer.
+     * 
+     * @param customerId The ID of the customer for whom the cart will be created.
+     * @return The newly created CartDTO object.
+     */
     public CartDTO createCartForCustomer(Long customerId) {
 
         Cart cart = new Cart();
@@ -56,6 +63,14 @@ public class CartService {
 
     }
 
+
+
+    /**
+     * Retrieves all carts associated with a specific customer by their customer ID.
+     * 
+     * @param customerId The ID of the customer whose carts are being retrieved.
+     * @return A list of CartDTO objects containing cart details.
+     */
     public List<CartDTO> getCartsByCustomerId(Long customerId) {
 
         List<Cart> carts = cartRepository.findByCustomerId(customerId);
@@ -81,13 +96,23 @@ public class CartService {
 
 
 
+
+    /**
+     * Retrieves a specific cart by its cart ID.
+     * 
+     * @param cartId The ID of the cart to be retrieved.
+     * @return The Cart object containing cart details.
+     * @throws RuntimeException if the cart is not found.
+     */
     public Cart getCartByCartId(Long cartId){
 
         Cart c = cartRepository.findById(cartId)
-        .orElseThrow(() -> new RuntimeException("Cart not found with id: " + cartId));
+            .orElseThrow(() -> new RuntimeException("Cart not found with id: " + cartId));
 
         return c;
     }
+
+
 
 
      
@@ -97,20 +122,28 @@ public class CartService {
      * @param productId The ID of the product to check.
      * @return The ProductDTO object if the product exists.
      */
-    public final String PRODUCT_URL = "http://localhost:8081/api/products/";
-
     public ProductDTO checkProduct(Long productId) {
 
+        String PRODUCT_URL = "http://localhost:8081/api/products/";
         String url = PRODUCT_URL + productId;
+
         ProductDTO pdt =restTemplate.getForObject(url, ProductDTO.class);
-        System.out.println("ProductDTO: " + pdt.getName());
 
         return pdt;
          
     }
 
 
+
+
     
+    /**
+     * Adds a product to a specific cart.
+     * 
+     * @param cartId The ID of the cart to which the product will be added.
+     * @param cartItems The CartItems object containing the product details and quantity.
+     * @return The updated Cart object.
+     */
     public Cart AddProductToCart(Long cartId, CartItems cartItems){
 
         ProductDTO pdt = checkProduct(cartItems.getProductId());
@@ -126,6 +159,17 @@ public class CartService {
     }
 
 
+
+
+
+
+    /**
+     * Removes a specific product from a cart.
+     * 
+     * @param cartId The ID of the cart from which the product will be removed.
+     * @param productId The ID of the product to be removed.
+     * @return true if the product was removed successfully, false otherwise.
+     */
     public boolean removeProduct(Long cartId, Long productId) {
 
         Cart cart = cartRepository.findById(cartId).orElse(null);
@@ -140,9 +184,9 @@ public class CartService {
         }
         
         CartItems productToRemove = items.stream()
-        .filter(item -> item.getId().equals(productId))
-        .findFirst()
-        .orElse(null);
+            .filter(item -> item.getId().equals(productId))
+            .findFirst()
+            .orElse(null);
 
         if (productToRemove != null) {
 
@@ -155,6 +199,16 @@ public class CartService {
     }
 
 
+
+
+    
+
+    /**
+     * Retrieves all products from a specific cart.
+     * 
+     * @param cartId The ID of the cart from which products will be retrieved.
+     * @return A list of CartItemDTO objects representing the products in the cart.
+     */
     public List<CartItemDTO> getProductsFromCart(Long cartId){
 
         Cart cart = cartRepository.findById(cartId)
