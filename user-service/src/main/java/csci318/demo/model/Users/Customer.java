@@ -12,7 +12,7 @@ import jakarta.persistence.Table;
 public class Customer extends User{
 
     @Column(name = "CustomerAddress")
-    private String address;
+    private Address address;
 
     @Column(name = "CustomerAge")
     private int age;
@@ -20,11 +20,11 @@ public class Customer extends User{
     @Column(name = "CustomerGender")
     private String gender;
 
-    public String getAddress() {
+    public Address getAddress() {
         return address;
     }
 
-    public void setAddress(String address) {
+    public void setAddress(Address address) {
         this.address = address;
     }
 
