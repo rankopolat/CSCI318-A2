@@ -8,11 +8,11 @@
 To run the project, ensure the following components are installed on your machine:
 
 - **JDK (Java Development Kit)**: Ensure that JDK 21 is installed. Verify it by running:
-  ```bash
+  ```console
   java --version
   ```
 - **Maven**: Maven should be installed to manage dependencies and build the project. Verify it by running:
-  ```bash
+  ```console
   mvn --version
   ```
 - **IDE**: You can use any Java IDE such as Visual Studio Code, IntelliJ IDEA, or Eclipse. The instructions below are demonstrated with Visual Studio Code.
@@ -50,7 +50,7 @@ To run the project, ensure the following components are installed on your machin
 
 3. **Build the Project**:  
    In the terminal, navigate to the root directory where the `pom.xml` file is located, and run:
-   ```bash
+   ```console
    mvn clean install
    ```
    This command compiles the code, runs any tests, and packages the application into a JAR file.
@@ -60,9 +60,13 @@ To run the project, ensure the following components are installed on your machin
 
 5. **Run the Spring Boot Applications**:  
    In each terminal, run the following commands to start each service:
-   ```bash
+   ```console
    mvn spring-boot:run -pl user-service
+   ```
+   ```console
    mvn spring-boot:run -pl product-service
+   ```
+   ```console
    mvn spring-boot:run -pl cart-service
    ```
 
