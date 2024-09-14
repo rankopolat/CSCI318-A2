@@ -74,13 +74,13 @@ public class UserController {
     }
 
     @PutMapping("/{customerId}/carts/{cartid}/products")
-     public void addProductToCart(@PathVariable Long customerId, @PathVariable Long cartid, @RequestBody ProductRequest productRequest) {
-        userService.addProductToCart(cartid, productRequest);
+     public ResponseEntity<?> addProductToCart(@PathVariable Long customerId, @PathVariable Long cartid, @RequestBody ProductRequest productRequest) {
+        return userService.addProductToCart(cartid, productRequest);
     }
 
     @DeleteMapping("/{customerId}/carts/{cartid}/products/{productId}")
-     public void removeProductFromCart(@PathVariable Long customerId, @PathVariable Long cartid, @PathVariable Long productId) {
-        userService.removeProductFromCart(cartid, productId);
+     public ResponseEntity<?> removeProductFromCart(@PathVariable Long customerId, @PathVariable Long cartid, @PathVariable Long productId) {
+        return userService.removeProductFromCart(cartid, productId);
     }
 
     

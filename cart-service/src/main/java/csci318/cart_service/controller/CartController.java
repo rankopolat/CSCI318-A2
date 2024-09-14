@@ -55,9 +55,17 @@ public class CartController {
     }
 
     @PutMapping("/{cartId}/products")
-    public Cart AddProductToCart(@PathVariable Long cartId, @RequestBody CartItems cartItems){
-        return cartService.AddProductToCart(cartId, cartItems);
+    public ResponseEntity<?> AddProductToCart(@PathVariable Long cartId, @RequestBody CartItems cartItems){
+
+        boolean added = cartService.addProductToCart(cartId, cartItems);
+
+        if (added) {
+            return ResponseEntity.ok("Product sucessfully added to cart");
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Failed to add Product to cart");
+        }
     }
+    
 
     @DeleteMapping("/{cartId}/products/{productId}")
     public ResponseEntity<?> RemoveProductFromCart(@PathVariable Long cartId, @PathVariable Long productId){

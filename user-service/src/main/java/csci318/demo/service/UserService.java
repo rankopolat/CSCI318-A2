@@ -11,6 +11,7 @@ import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
 
 import csci318.demo.controller.DTO.CartDTO;
@@ -179,15 +180,23 @@ public class UserService {
      * 
      * @param cartId The ID of the cart to which the product will be added.
      * @param productRequest The ProductRequest object containing product details.
+     * @return ResponseEntity<?> containing the result of the operation.
      */
-    public void addProductToCart(Long cartid, ProductRequest productRequest){
+    public ResponseEntity<?> addProductToCart(Long cartId, ProductRequest productRequest) {
+        String url = CART_URL + cartId + "/products";
 
-        String url = CART_URL + cartid + "/products";
-        restTemplate.put(url, productRequest);
+        try {
+            restTemplate.put(url, productRequest);
 
-        UserEvent productAddedEvent = new UserEvent(UserEvent.EventType.PRODUCT_ADDED_TO_CART, cartid, productRequest.getProductId(), null);
-        applicationEventPublisher.publishEvent(productAddedEvent);
+            UserEvent productAddedEvent = new UserEvent(UserEvent.EventType.PRODUCT_ADDED_TO_CART, cartId, productRequest.getProductId(), null);
+            applicationEventPublisher.publishEvent(productAddedEvent);
 
+            return ResponseEntity.ok("Product added successfully to the cart.");
+        } catch (RestClientException e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                                .body("Error occurred while adding the product to the cart: " + e.getMessage());
+        }
+        
     }
 
 
@@ -215,13 +224,21 @@ public class UserService {
      * @param cartId The ID of the cart from which the product will be removed.
      * @param productId The ID of the product to be removed.
      */
-    public void removeProductFromCart(Long cartId, Long productId){
+    public ResponseEntity<?> removeProductFromCart(Long cartId, Long productId){
 
         String url = CART_URL + cartId + "/products/" + productId;
-        restTemplate.delete(url);
 
-        UserEvent productAddedEvent = new UserEvent(UserEvent.EventType.PRODUCT_REMOVED_FROM_CART, cartId, productId, null);
+        try {
+            restTemplate.delete(url);
+
+            UserEvent productAddedEvent = new UserEvent(UserEvent.EventType.PRODUCT_REMOVED_FROM_CART, cartId, productId, null);
         applicationEventPublisher.publishEvent(productAddedEvent);
+
+            return ResponseEntity.ok("Product removed successfully from the cart.");
+        } catch (RestClientException e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                                .body("Error occurred while remove the product from the cart: " + e.getMessage());
+        }
 
     }
 

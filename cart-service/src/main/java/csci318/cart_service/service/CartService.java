@@ -144,18 +144,24 @@ public class CartService {
      * @param cartItems The CartItems object containing the product details and quantity.
      * @return The updated Cart object.
      */
-    public Cart AddProductToCart(Long cartId, CartItems cartItems){
+    public boolean addProductToCart(Long cartId, CartItems cartItems) {
 
         ProductDTO pdt = checkProduct(cartItems.getProductId());
+        if (pdt == null) {
+            return false; 
+        }
         
         Cart c = getCartByCartId(cartId);
+        if (c == null) {
+            return false; 
+        }
+        
         cartItems.setName(pdt.getName());
-
         c.addItem(cartItems);
+    
         cartRepository.save(c);
-
-        return c;
-
+    
+        return true; 
     }
 
 
