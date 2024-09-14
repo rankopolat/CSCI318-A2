@@ -1,119 +1,143 @@
-# CSCI318 Part B
 
-## Instructions To Run
+# CSCI318 Group Project Part B
+
+## Instructions to Run
 
 ### Prerequisites
 
-- To run the project, we need three components installed on the computer.
-JDK(Java Development Kit):Ensure that JDK 21 is installed on your system. You can verify this by running (java --version) in the terminal.
-- Maven:Maven should be installed to manage dependencies and build the project. You can check if Maven is already installed by running (maven --version) in the terminal
-- IDE: As an IDE you can use any java IDE such as visual studio code, intelliJ or Eclipse etc.
+To run the project, ensure the following components are installed on your machine:
 
-If you have already installed the above three, go to the Spring Initializr to download a Spring project template. 
-Choose Maven in Project, Choose Java in Language. Choose a version of Spring Boot, for example 3.3.2. 
-Choose Jar in Packaging and Java 21. In Dependencies, add Web, JPA and H2.
-Click "GENERATE", download and extract the zip file. Open the project folder in the IDE of your choice. 
-Since we are using VSC, we would like to demonstrate with vscode instructions.
+- **JDK (Java Development Kit)**: Ensure that JDK 21 is installed. Verify it by running:
+  ```bash
+  java --version
+  ```
+- **Maven**: Maven should be installed to manage dependencies and build the project. Verify it by running:
+  ```bash
+  mvn --version
+  ```
+- **IDE**: You can use any Java IDE such as Visual Studio Code, IntelliJ IDEA, or Eclipse. The instructions below are demonstrated with Visual Studio Code.
 
-### Method 1 : VSCODE ONLY (launch.json)
-### Steps
+### Method 1: VSCode (using `launch.json`)
 
-#### Step 1: Clone the Project
-Clone the project from the github repository.
+#### Steps
 
-#### Step 2: Open the Project in Vscode
-Open the downloaded folder in vscode.
+1. **Clone the Project**:  
+   Clone the project from the GitHub repository.
+   
+2. **Open the Project in VSCode**:  
+   Open the downloaded folder in Visual Studio Code.
 
-#### Step 3: Select Run and Debug
-On the lefthand side of vscode in the tab bar goto Run and Debug
+3. **Select Run and Debug**:  
+   On the left-hand side of VSCode, navigate to the **Run and Debug** tab in the sidebar.
 
-#### Step 3: Select Run and Debug
-On the lefthand side of vscode in the tab bar goto Run and Debug
+4. **Run All Services**:  
+   In the drop-down menu, select **Run all services** and press the play button to start all services.
 
-#### Step 4: Select Run all Services and run
-selecting the drop down choose Run all services and press the play button to start all services
+5. **Access the Application**:  
+   After starting the services, the application will run on ports `8080`, `8081`, and `8083`. You can test the RESTful endpoints using tools like `curl`, Postman, or a web browser.
 
+---
 
-### Method 2
-### Steps
+### Method 2: Manually Running Each Service
 
-#### Step 1: Clone the Project
-Clone the project from the github repository.
+#### Steps
 
-#### Step 2: Open the Project in Your IDE( in this case Vscode)
-Open the downloaded folder in vscode.
+1. **Clone the Project**:  
+   Clone the project from the GitHub repository.
 
-#### Step 3: Build the Project
-In the terminal, navigate to the root directory of the project where pom.xml is located and run 
-mvn clean install >> this command will compile the code, and run any tests, and package the application into a JAR file. 
+2. **Open the Project in Your IDE**:  
+   Open the downloaded folder in your IDE (e.g., Visual Studio Code).
 
-#### Step 4: Open a new terminal for each individual service
-Following successful build of the project, 2 new terminals needs to be opened navigating to the root directory
+3. **Build the Project**:  
+   In the terminal, navigate to the root directory where the `pom.xml` file is located, and run:
+   ```bash
+   mvn clean install
+   ```
+   This command compiles the code, runs any tests, and packages the application into a JAR file.
 
-#### Step 5: Run the Spring Boot Application
+4. **Open Terminals for Each Service**:  
+   After a successful build, open two additional terminals and navigate to the root directory in each.
 
-In each terminal enter the following command
+5. **Run the Spring Boot Applications**:  
+   In each terminal, run the following commands to start each service:
+   ```bash
+   mvn spring-boot:run -pl user-service
+   mvn spring-boot:run -pl product-service
+   mvn spring-boot:run -pl cart-service
+   ```
 
-mvn spring-boot:run -pl user-service
-mvn spring-boot:run -pl product-service
-mvn spring-boot:run -pl cart-service
+6. **Access the Application**:  
+   After starting all services, the application will be running on ports `8080`, `8081`, and `8083`. You can test the RESTful endpoints using `curl`, Postman, or a web browser.
 
-#### Step 6: Access the Application
-After starting the application, it should be running on ports 8080, 8081 and 8083.
-You can test the RESTful endpoints using tools like curl, Postman, or your web browser.
+---
 
+### RESTful API Commands
 
+#### Register Customer
 
-| Register Customer    | Command/Response      |
-|--------------|--------------------------------------|
-| MacOS/Linux  | `{ curl -X POST -H "Content-Type:application/json" -d '{"name":"Poh", "email":"poh@uowmail.edu.au","password":"password", "address": {"city":"Wollongong", "state":"NSW", "country":"Australia"}, "age":25, "gender":"female"}' http://localhost:8080/api/users}`|
-| Windows      | `{ curl -X POST -H "Content-Type:application/json" -d "{\"name\":\"Poh\", \"email\":\"poh@uowmail.edu.au\", \"password\":\"password\", \"address\": {\"city\":\"Wollongong\", \"state\":\"NSW\", \"country\":\"Australia\"}, \"age\":25, \"gender\":\"female\"}" http://localhost:8080/api/users }`  |
-
-
-| Fetch Customers    | Command/Response                                                                                                                                                                     |
+| OS           | Command                                                                                                                                                                              |
 |--------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| MacOS/Linux  | `curl -X GET http://localhost:8080/api/users `                                                                                                                                    |
+| **MacOS/Linux**  | `curl -X POST -H "Content-Type:application/json" -d '{"name":"Poh", "email":"poh@uowmail.edu.au", "password":"password", "address": {"city":"Wollongong", "state":"NSW", "country":"Australia"}, "age":25, "gender":"female"}' http://localhost:8080/api/users` |
+| **Windows**  | `curl -X POST -H "Content-Type:application/json" -d "{"name":"Poh", "email":"poh@uowmail.edu.au", "password":"password", "address": {"city":"Wollongong", "state":"NSW", "country":"Australia"}, "age":25, "gender":"female"}" http://localhost:8080/api/users` |
 
+#### Fetch All Customers
 
-| Fetch Customer by ID   | Command/Response                                                                                                                                                                     |
+| OS           | Command                                                                                                                                                                              |
 |--------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| MacOS/Linux  | `curl -X GET http://localhost:8080/api/users/1`                                                                                                                                    |
-| Windows      | `curl -X GET http://localhost:8080/api/users/1`                                                                                                                                    |
+| **MacOS/Linux**  | `curl -X GET http://localhost:8080/api/users`                                                                                                                                    |
+| **Windows**  | `curl -X GET http://localhost:8080/api/users`                                                                                                                                         |
 
+#### Fetch Customer by ID
 
-| Login Customer    | Command/Response                                                                                                                                                                     |
+| OS           | Command                                                                                                                                                                              |
 |--------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| MacOS/Linux  | `curl -X POST -H "Content-Type:application/json" -d '{ "email":"poh@uowmail.edu.au","password":"password"}' http://localhost:8080/api/users/login`  |
-| Windows      | `curl -X POST -H "Content-Type:application/json" -d "{ \"email\":\"poh@uowmail.edu.au\",\"password\":\"password\"}" http://localhost:8080/api/users/login`   |
+| **MacOS/Linux**  | `curl -X GET http://localhost:8080/api/users/1`                                                                                                                                   |
+| **Windows**  | `curl -X GET http://localhost:8080/api/users/1`                                                                                                                                       |
 
+#### Login Customer
 
-| Create Cart   | Command/Response                                                                                                                                                                     |
+| OS           | Command                                                                                                                                                                              |
 |--------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| MacOS/Linux  | `curl -X POST http://localhost:8080/api/users/1/carts` |
-| Windows      | `curl -X POST http://localhost:8080/api/users/1/carts`   |
+| **MacOS/Linux**  | `curl -X POST -H "Content-Type:application/json" -d '{ "email":"poh@uowmail.edu.au", "password":"password"}' http://localhost:8080/api/users/login`                                  |
+| **Windows**  | `curl -X POST -H "Content-Type:application/json" -d "{ "email":"poh@uowmail.edu.au", "password":"password"}" http://localhost:8080/api/users/login`                            |
 
+#### Create Cart for Customer
 
-| Fetch Customers Carts   | Command/Response                                                                                                                                                                     |
+| OS           | Command                                                                                                                                                                              |
 |--------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| MacOS/Linux  | `curl -X GET http://localhost:8080/api/users/1/carts` |
-| Windows      | `curl -X GET http://localhost:8080/api/users/1/carts`   |
+| **MacOS/Linux**  | `curl -X POST http://localhost:8080/api/users/1/carts`                                                                                                                            |
+| **Windows**  | `curl -X POST http://localhost:8080/api/users/1/carts`                                                                                                                                |
 
+#### Fetch Customer’s Carts
 
-| Add Product to cart    | Command/Response                                                                                                                                         |
+| OS           | Command                                                                                                                                                                              |
 |--------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| MacOS/Linux  | `curl -X PUT -H "Content-Type:application/json" -d '{ "productId":1,"quantity":5}' http://localhost:8080/api/users/1/carts/1/products` |
-| Windows      | `curl -X PUT -H "Content-Type:application/json" -d "{ \"productId\":1,\"quantity\":5}" http://localhost:8080/api/users/1/carts/1/products`   |
+| **MacOS/Linux**  | `curl -X GET http://localhost:8080/api/users/1/carts`                                                                                                                             |
+| **Windows**  | `curl -X GET http://localhost:8080/api/users/1/carts`                                                                                                                                 |
 
+#### Add Product to Cart
 
-| Fetch Products in Cart    | Command/Response                                                                                                                                                                     |
+| OS           | Command                                                                                                                                                                              |
 |--------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| MacOS/Linux  | `curl -X GET http://localhost:8080/api/users/1/carts/1/products` |
-| Windows      | `curl -X GET http://localhost:8080/api/users/1/carts/1/products`   |
+| **MacOS/Linux**  | `curl -X PUT -H "Content-Type:application/json" -d '{ "productId":1, "quantity":5}' http://localhost:8080/api/users/1/carts/1/products`                                            |
+| **Windows**  | `curl -X PUT -H "Content-Type:application/json" -d "{ "productId":1, "quantity":5}" http://localhost:8080/api/users/1/carts/1/products`                                           |
 
+#### Fetch Products in Cart
 
-
-| Remove Product From Cart    | Command/Response                                                                                                                                                                     |
+| OS           | Command                                                                                                                                                                              |
 |--------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| MacOS/Linux  | `curl -X DELETE http://localhost:8080/api/users/1/carts/1/products/1` |
-| Windows      | `curl -X DELETE http://localhost:8080/api/users/1/carts/1/products/1`   |
+| **MacOS/Linux**  | `curl -X GET http://localhost:8080/api/users/1/carts/1/products`                                                                                                                  |
+| **Windows**  | `curl -X GET http://localhost:8080/api/users/1/carts/1/products`                                                                                                                      |
 
+#### Remove Product from Cart
+
+| OS           | Command                                                                                                                                                                              |
+|--------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| **MacOS/Linux**  | `curl -X DELETE http://localhost:8080/api/users/1/carts/1/products/1`                                                                                                             |
+| **Windows**  | `curl -X DELETE http://localhost:8080/api/users/1/carts/1/products/1`                                                                                                                 |
+
+---
+
+### Conclusion
+
+Follow these steps and commands to run our CSCI318 Group Project Part B and interact with the services via the provided RESTful endpoints. You can use tools like `curl`, Postman, or a web browser to test and verify the services.
