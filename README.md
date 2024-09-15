@@ -1,4 +1,3 @@
-
 # CSCI318 Group Project Part B
 
 ## Instructions to Run
@@ -23,7 +22,6 @@ To run the project, ensure the following components are installed on your machin
 
 1. **Clone the Project**:  
    Clone the project from the GitHub repository.
-   
 2. **Open the Project in VSCode**:  
    Open the downloaded folder in Visual Studio Code.
 
@@ -50,9 +48,11 @@ To run the project, ensure the following components are installed on your machin
 
 3. **Build the Project**:  
    In the terminal, navigate to the root directory where the `pom.xml` file is located, and run:
+
    ```console
    mvn clean install
    ```
+
    This command compiles the code, runs any tests, and packages the application into a JAR file.
 
 4. **Open Terminals for Each Service**:  
@@ -60,12 +60,15 @@ To run the project, ensure the following components are installed on your machin
 
 5. **Run the Spring Boot Applications**:  
    In each terminal, run the following commands to start each service:
+
    ```console
    mvn spring-boot:run -pl user-service
    ```
+
    ```console
    mvn spring-boot:run -pl product-service
    ```
+
    ```console
    mvn spring-boot:run -pl cart-service
    ```
@@ -79,66 +82,136 @@ To run the project, ensure the following components are installed on your machin
 
 #### Register Customer
 
-| OS           | Command                                                                                                                                                                              |
-|--------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| **MacOS/Linux**  | `curl -X POST -H "Content-Type:application/json" -d '{"name":"Poh", "email":"poh@uowmail.edu.au", "password":"password", "address": {"city":"Wollongong", "state":"NSW", "country":"Australia"}, "age":25, "gender":"female"}' http://localhost:8080/api/users` |
-| **Windows**  | `curl -X POST -H "Content-Type:application/json" -d "{"name":"Poh", "email":"poh@uowmail.edu.au", "password":"password", "address": {"city":"Wollongong", "state":"NSW", "country":"Australia"}, "age":25, "gender":"female"}" http://localhost:8080/api/users` |
+| OS              | Command                                                                                                                                                                                                                                                         |
+| --------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **MacOS/Linux** | `curl -X POST -H "Content-Type:application/json" -d '{"name":"Poh", "email":"poh@uowmail.edu.au", "password":"password", "address": {"city":"Wollongong", "state":"NSW", "country":"Australia"}, "age":25, "gender":"female"}' http://localhost:8080/api/users` |
+| **Windows**     | `curl -X POST -H "Content-Type:application/json" -d "{"name":"Poh", "email":"poh@uowmail.edu.au", "password":"password", "address": {"city":"Wollongong", "state":"NSW", "country":"Australia"}, "age":25, "gender":"female"}" http://localhost:8080/api/users` |
 
 #### Fetch All Customers
 
-| OS           | Command                                                                                                                                                                              |
-|--------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| **MacOS/Linux**  | `curl -X GET http://localhost:8080/api/users`                                                                                                                                    |
-| **Windows**  | `curl -X GET http://localhost:8080/api/users`                                                                                                                                         |
+| OS              | Command                                       |
+| --------------- | --------------------------------------------- |
+| **MacOS/Linux** | `curl -X GET http://localhost:8080/api/users` |
+| **Windows**     | `curl -X GET http://localhost:8080/api/users` |
 
 #### Fetch Customer by ID
 
-| OS           | Command                                                                                                                                                                              |
-|--------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| **MacOS/Linux**  | `curl -X GET http://localhost:8080/api/users/1`                                                                                                                                   |
-| **Windows**  | `curl -X GET http://localhost:8080/api/users/1`                                                                                                                                       |
+| OS              | Command                                         |
+| --------------- | ----------------------------------------------- |
+| **MacOS/Linux** | `curl -X GET http://localhost:8080/api/users/1` |
+| **Windows**     | `curl -X GET http://localhost:8080/api/users/1` |
 
 #### Login Customer
 
-| OS           | Command                                                                                                                                                                              |
-|--------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| **MacOS/Linux**  | `curl -X POST -H "Content-Type:application/json" -d '{ "email":"poh@uowmail.edu.au", "password":"password"}' http://localhost:8080/api/users/login`                                  |
-| **Windows**  | `curl -X POST -H "Content-Type:application/json" -d "{ "email":"poh@uowmail.edu.au", "password":"password"}" http://localhost:8080/api/users/login`                            |
+| OS              | Command                                                                                                                                             |
+| --------------- | --------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **MacOS/Linux** | `curl -X POST -H "Content-Type:application/json" -d '{ "email":"poh@uowmail.edu.au", "password":"password"}' http://localhost:8080/api/users/login` |
+| **Windows**     | `curl -X POST -H "Content-Type:application/json" -d "{ "email":"poh@uowmail.edu.au", "password":"password"}" http://localhost:8080/api/users/login` |
 
 #### Create Cart for Customer
 
-| OS           | Command                                                                                                                                                                              |
-|--------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| **MacOS/Linux**  | `curl -X POST http://localhost:8080/api/users/1/carts`                                                                                                                            |
-| **Windows**  | `curl -X POST http://localhost:8080/api/users/1/carts`                                                                                                                                |
+| OS              | Command                                                |
+| --------------- | ------------------------------------------------------ |
+| **MacOS/Linux** | `curl -X POST http://localhost:8080/api/users/1/carts` |
+| **Windows**     | `curl -X POST http://localhost:8080/api/users/1/carts` |
 
 #### Fetch Customer’s Carts
 
-| OS           | Command                                                                                                                                                                              |
-|--------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| **MacOS/Linux**  | `curl -X GET http://localhost:8080/api/users/1/carts`                                                                                                                             |
-| **Windows**  | `curl -X GET http://localhost:8080/api/users/1/carts`                                                                                                                                 |
+| OS              | Command                                               |
+| --------------- | ----------------------------------------------------- |
+| **MacOS/Linux** | `curl -X GET http://localhost:8080/api/users/1/carts` |
+| **Windows**     | `curl -X GET http://localhost:8080/api/users/1/carts` |
 
 #### Add Product to Cart
 
-| OS           | Command                                                                                                                                                                              |
-|--------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| **MacOS/Linux**  | `curl -X PUT -H "Content-Type:application/json" -d '{ "productId":1, "quantity":5}' http://localhost:8080/api/users/1/carts/1/products`                                            |
-| **Windows**  | `curl -X PUT -H "Content-Type:application/json" -d "{ "productId":1, "quantity":5}" http://localhost:8080/api/users/1/carts/1/products`                                           |
+| OS              | Command                                                                                                                                 |
+| --------------- | --------------------------------------------------------------------------------------------------------------------------------------- |
+| **MacOS/Linux** | `curl -X PUT -H "Content-Type:application/json" -d '{ "productId":1, "quantity":5}' http://localhost:8080/api/users/1/carts/1/products` |
+| **Windows**     | `curl -X PUT -H "Content-Type:application/json" -d "{ "productId":1, "quantity":5}" http://localhost:8080/api/users/1/carts/1/products` |
+
+#### Fetch Cart by ID
+
+| OS              | Command                                                 |
+| --------------- | ------------------------------------------------------- |
+| **MacOS/Linux** | `curl -X GET http://localhost:8080/api/users/1/carts/1` |
+| **Windows**     | `curl -X GET http://localhost:8080/api/users/1/carts/1` |
 
 #### Fetch Products in Cart
 
-| OS           | Command                                                                                                                                                                              |
-|--------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| **MacOS/Linux**  | `curl -X GET http://localhost:8080/api/users/1/carts/1/products`                                                                                                                  |
-| **Windows**  | `curl -X GET http://localhost:8080/api/users/1/carts/1/products`                                                                                                                      |
+| OS              | Command                                                          |
+| --------------- | ---------------------------------------------------------------- |
+| **MacOS/Linux** | `curl -X GET http://localhost:8080/api/users/1/carts/1/products` |
+| **Windows**     | `curl -X GET http://localhost:8080/api/users/1/carts/1/products` |
 
 #### Remove Product from Cart
 
-| OS           | Command                                                                                                                                                                              |
-|--------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| **MacOS/Linux**  | `curl -X DELETE http://localhost:8080/api/users/1/carts/1/products/1`                                                                                                             |
-| **Windows**  | `curl -X DELETE http://localhost:8080/api/users/1/carts/1/products/1`                                                                                                                 |
+| OS              | Command                                                               |
+| --------------- | --------------------------------------------------------------------- |
+| **MacOS/Linux** | `curl -X DELETE http://localhost:8080/api/users/1/carts/1/products/1` |
+| **Windows**     | `curl -X DELETE http://localhost:8080/api/users/1/carts/1/products/1` |
+
+#### Create a Product
+
+| OS              | Command                                                                                                                                                   |
+| --------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **MacOS/Linux** | `curl -X POST -H "Content-Type:application/json" -d '{"name":"XPS", "category":"Laptop", "price":1999, "weight":0.8}' http://localhost:8081/api/products` |
+| **Windows**     | `curl -X POST -H "Content-Type:application/json" -d '{"name":"XPS", "category":"Laptop", "price":1999, "weight":0.8}' http://localhost:8081/api/products` |
+
+#### Fetch all products
+
+| OS              | Command                                          |
+| --------------- | ------------------------------------------------ |
+| **MacOS/Linux** | `curl -X GET http://localhost:8081/api/products` |
+| **Windows**     | `curl -X GET http://localhost:8081/api/products` |
+
+#### Fetch a Product by ID
+
+| OS              | Command                                            |
+| --------------- | -------------------------------------------------- |
+| **MacOS/Linux** | `curl -X GET http://localhost:8081/api/products/3` |
+| **Windows**     | `curl -X GET http://localhost:8081/api/products/3` |
+
+#### Create Cart (through Cart Service)
+
+| OS              | Command                                               |
+| --------------- | ----------------------------------------------------- |
+| **MacOS/Linux** | `curl -X POST http://localhost:8083/api/carts/user/1` |
+| **Windows**     | `curl -X POST http://localhost:8083/api/carts/user/1` |
+
+#### Fetch all Carts for a Customer (through Cart Service)
+
+| OS              | Command                                              |
+| --------------- | ---------------------------------------------------- |
+| **MacOS/Linux** | `curl -X GET http://localhost:8083/api/carts/user/1` |
+| **Windows**     | `curl -X GET http://localhost:8083/api/carts/user/1` |
+
+#### Fetch a Cart by ID
+
+| OS              | Command                                         |
+| --------------- | ----------------------------------------------- |
+| **MacOS/Linux** | `curl -X GET http://localhost:8083/api/carts/1` |
+| **Windows**     | `curl -X GET http://localhost:8083/api/carts/1` |
+
+#### Fetch all Products in a Cart (through Cart Service)
+
+| OS              | Command                                                  |
+| --------------- | -------------------------------------------------------- |
+| **MacOS/Linux** | `curl -X GET http://localhost:8083/api/carts/1/products` |
+| **Windows**     | `curl -X GET http://localhost:8083/api/carts/1/products` |
+
+#### Add Product to Cart (through Cart Service)
+
+| OS              | Command                                                                                                                            |
+| --------------- | ---------------------------------------------------------------------------------------------------------------------------------- |
+| **MacOS/Linux** | `curl -X PUT -H "Content-Type: application/json" -d '{"productId":1,"quantity":5}' http://localhost:8083/api/carts/1/products`     |
+| **Windows**     | `curl -X PUT -H "Content-Type: application/json" -d '{\"productId\":1,\"quantity\":5}' http://localhost:8083/api/carts/1/products` |
+
+#### Delete Product from Cart (through Cart Service)
+
+| OS              | Command                                                       |
+| --------------- | ------------------------------------------------------------- |
+| **MacOS/Linux** | `curl -X DELETE http://localhost:8083/api/carts/1/products/1` |
+| **Windows**     | `curl -X DELETE http://localhost:8083/api/carts/1/products/1` |
 
 ---
 
