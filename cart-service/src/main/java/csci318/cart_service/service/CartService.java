@@ -190,7 +190,7 @@ public class CartService {
         }
         
         CartItems productToRemove = items.stream()
-            .filter(item -> item.getId().equals(productId))
+            .filter(item -> item.getProductId().equals(productId))
             .findFirst()
             .orElse(null);
 
